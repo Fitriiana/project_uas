@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:project_uas/Screens/home.dart';
+import 'package:project_uas/Screens/leaderboard.dart';
 import 'package:project_uas/Screens/login.dart';
+import 'package:project_uas/Screens/my_creation.dart';
+import 'package:project_uas/Screens/setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -51,6 +55,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        'home': (context) => Home(),
+        'leaderboard': (context) => Leaderboard(),
+        'mycreation': (context) =>MyCreation(),
+        'setting': (context) => Setting(),
+      },
     );
   }
 }
@@ -76,6 +86,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  int _currentIndex = 0;
+  final List<Widget> _screens = [
+    Home(),
+    MyCreation(),
+    Leaderboard(),
+    Setting()
+  ];
+  final List<String> _title = [
+    'Home',
+    'My Creation',
+    'Leaderboard',
+    'Settings'
+  ];
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -99,43 +123,66 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(_title[_currentIndex]),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
+      body: _screens[_currentIndex],
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          //  nambah meme
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+      drawer: myDrawer(),
+      bottomNavigationBar: myButtonNavbar(),// This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  BottomNavigationBar myButtonNavbar() {
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      fixedColor: Colors.teal,
+      items: const [
+        BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home),),
+        BottomNavigationBarItem(label: "My Creation", icon: Icon(Icons.mood),),
+        BottomNavigationBarItem(label: "Leaderboard", icon: Icon(Icons.leaderboard_outlined),),
+        BottomNavigationBarItem(label: "Settings", icon: Icon(Icons.settings),),
+      ],
+      onTap: (int index) {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+    );
+  }
+
+  Drawer myDrawer() {
+    return Drawer(
+      elevation: 16.0,
+      child: Column(
+        children: [
+          UserAccountsDrawerHeader(
+            accountName: Text('nama lengkap'),
+            accountEmail: Text(active_user),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage:
+              NetworkImage('https://i.pravatar.cc/150'), //nanti diisi avatar orange
+            ),
+          ),
+          Scaffold(
+            floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+            floatingActionButton: FloatingActionButton(
+              onPressed: _incrementCounter,
+              tooltip: 'Increment',
+              backgroundColor: Colors.orange,
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.logout),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
