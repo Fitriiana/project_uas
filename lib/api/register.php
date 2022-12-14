@@ -4,8 +4,8 @@ $arr = null;
 
 $conn = new mysqli("localhost", "flutter_160419069", "ubaya", "flutter_160419069");
 extract($_POST);
-$r_pass = $_POST['rPass'];
-$pass = $_POST['pass'];
+$r_pass = $_POST['rPassword'];
+$pass = $_POST['password'];
 $tgl = date('Y/m/d');
 
 if ($conn->connect_error) {
@@ -14,7 +14,7 @@ if ($conn->connect_error) {
   if ($r_pass == $pass) {
     $sql = "INSERT INTO users(username, password, nama_depan, nama_belakang, privasi, link_avatar, tanggal_daftar) values(?,?,?,?,?,?,?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssiss", $username, $password, $nama_depan, $nama_belakang, 0, "", $tgl);
+    $stmt->bind_param("ssssiss", $username, $pass, $nama_depan, $nama_belakang, 0, "", $tgl);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {

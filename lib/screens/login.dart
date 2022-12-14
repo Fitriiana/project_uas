@@ -37,14 +37,15 @@ class _LoginState extends State<Login> {
   // Function
   void doLogin() async {
     final response = await http.post(
-        Uri.parse("https://ubaya.fun/flutter/meme/160419063/login.php"),
+        Uri.parse("https://ubaya.fun/flutter/160419063/meme/login.php"),
         body: {'user_id': _user_id, 'user_password': _user_password});
     if (response.statusCode == 200) {
       Map json = jsonDecode(response.body);
       if (json['result'] == 'success') {
         final prefs = await SharedPreferences.getInstance();
         prefs.setString("user_id", _user_id);
-        prefs.setString("user_name", json['user_name']);
+        prefs.setString("user_name", json['username']);
+        prefs.setString("fullname", json['nama_depan'] + json['nama_belakang']);
         main();
       } else {
         setState(() {
@@ -75,7 +76,7 @@ class _LoginState extends State<Login> {
                     Image.asset(
                       "assets/images/logo.png",
                       scale: 0.5,
-                      height: 100, 
+                      height: 100,
                       width: 100,
                     ),
                     Text('Daily Meme Digest',
@@ -116,7 +117,7 @@ class _LoginState extends State<Login> {
                     width: 300,
                     child: OutlinedButton(
                       onPressed: () {
-                         Navigator.push(
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Register()));
@@ -131,15 +132,15 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: 50,
-                    width: 300,
+                    height: 25,
+                    width: 200,
                     child: ElevatedButton(
                       onPressed: () {
                         doLogin();
                       },
                       child: Text(
                         'Sign In',
-                        style: TextStyle(color: Colors.white, fontSize: 25),
+                        style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
                   ),

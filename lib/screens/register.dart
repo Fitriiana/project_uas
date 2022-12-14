@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:project_uas/Screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
@@ -13,7 +15,36 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final TextEditingController _user_cont = TextEditingController();
-  
+  String _username = "";
+  String _password = "";
+  String _rPassword = "";
+  String _firstName = "";
+  String _lastName = "";
+
+  void doLogin() async {
+    final response = await http.post(
+        Uri.parse("https://ubaya.fun/flutter/160419063/meme/register.php"),
+        body: {
+          'username': _username,
+          'password': _password,
+          'rPassword': _rPassword,
+          'nama_depan': _firstName,
+          'nama_belakang': _lastName
+        });
+    if (response.statusCode == 200) {
+      Map json = jsonDecode(response.body);
+      if (json['result'] == 'success') {
+
+        MyLogin();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed To Create New Account')));
+      }
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +64,9 @@ class _RegisterState extends State<Register> {
               child: Column(children: [
                 TextField(
                   controller: _user_cont,
-                  onChanged: (v) {},
+                  onChanged: (v) {
+                    _username = v;
+                  },
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username',
@@ -41,7 +74,9 @@ class _RegisterState extends State<Register> {
                 ),
                 TextField(
                   controller: _user_cont,
-                  onChanged: (v) {},
+                  onChanged: (v) {
+                    _firstName = v;
+                  },
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'First Name',
@@ -49,7 +84,9 @@ class _RegisterState extends State<Register> {
                 ),
                 TextField(
                   controller: _user_cont,
-                  onChanged: (v) {},
+                  onChanged: (v) {
+                    _lastName = v;
+                  },
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Last Name',
@@ -57,7 +94,9 @@ class _RegisterState extends State<Register> {
                 ),
                 TextField(
                   controller: _user_cont,
-                  onChanged: (v) {},
+                  onChanged: (v) {
+                    _password = v;
+                  },
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
@@ -65,7 +104,9 @@ class _RegisterState extends State<Register> {
                 ),
                 TextField(
                   controller: _user_cont,
-                  onChanged: (v) {},
+                  onChanged: (v) {
+                    _rPassword = v;
+                  },
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Repeat Password',
@@ -73,13 +114,11 @@ class _RegisterState extends State<Register> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
+                  child: SizedBox(
                     height: 50,
                     width: 300,
                     child: ElevatedButton(
-                      onPressed: () {
-                       
-                      },
+                      onPressed: () {},
                       child: Text(
                         'Create Account',
                         style: TextStyle(color: Colors.white, fontSize: 25),

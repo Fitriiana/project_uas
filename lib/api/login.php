@@ -10,14 +10,14 @@ if ($conn->connect_error) {
 } else {
   $sql = "SELECT * FROM users where username=? and password=?";
   $stmt = $conn->prepare($sql);
-  $stmt->bind_param("ss", $user_id, $user_password);
+  $stmt->bind_param("ss", $username, $password);
   $stmt->execute();
   $result = $stmt->get_result();
   if ($result->num_rows > 0) {
     $r = mysqli_fetch_assoc($result); 
     $arr = ["result" => "success", "username" => $r['username']];
   } else {
-    $arr = ["result" => "error", "message" => "sql error: $sql"];
+    $arr = ["result" => "error", "message" => ""];
   }
 }
 echo json_encode($arr);

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:project_uas/Screens/home.dart';
 import 'package:project_uas/Screens/leaderboard.dart';
@@ -7,15 +9,15 @@ import 'package:project_uas/Screens/setting.dart';
 import 'package:project_uas/screens/addnewmeme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 String username = "";
 String id_user = "";
 String fullname = "";
 
 Future<String> checkUser() async {
   final prefs = await SharedPreferences.getInstance();
-  String user_id = prefs.getString("user_id") ?? '';
-  return user_id;
+  username = prefs.getString("username") ?? '';
+  fullname = prefs.getString("fullname") ?? '';
+  return username;
 }
 
 void doLogout() async {
@@ -35,8 +37,6 @@ void main() {
     }
   });
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'home': (context) => Home(),
         'leaderboard': (context) => Leaderboard(),
-        'mycreation': (context) =>MyCreation(),
+        'mycreation': (context) => MyCreation(),
         'setting': (context) => Setting(),
         'addnewmeme': (context) => AddNewMeme()
       },
@@ -141,7 +141,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
       drawer: myDrawer(),
-      bottomNavigationBar: myButtonNavbar(),// This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar:
+          myButtonNavbar(), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -150,10 +151,22 @@ class _MyHomePageState extends State<MyHomePage> {
       currentIndex: _currentIndex,
       fixedColor: Colors.teal,
       items: const [
-        BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home),),
-        BottomNavigationBarItem(label: "My Creation", icon: Icon(Icons.mood),),
-        BottomNavigationBarItem(label: "Leaderboard", icon: Icon(Icons.leaderboard_outlined),),
-        BottomNavigationBarItem(label: "Settings", icon: Icon(Icons.settings),),
+        BottomNavigationBarItem(
+          label: "Home",
+          icon: Icon(Icons.home),
+        ),
+        BottomNavigationBarItem(
+          label: "My Creation",
+          icon: Icon(Icons.mood),
+        ),
+        BottomNavigationBarItem(
+          label: "Leaderboard",
+          icon: Icon(Icons.leaderboard_outlined),
+        ),
+        BottomNavigationBarItem(
+          label: "Settings",
+          icon: Icon(Icons.settings),
+        ),
       ],
       onTap: (int index) {
         setState(() {
@@ -169,17 +182,17 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Column(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('nama lengkap'),
+            accountName: Text(fullname),
             accountEmail: Text(username),
             currentAccountPicture: CircleAvatar(
-              backgroundImage:
-              NetworkImage('https://i.pravatar.cc/150'), //nanti diisi avatar orange
+              backgroundImage: NetworkImage(
+                  'https://i.pravatar.cc/150'), //nanti diisi avatar orange
             ),
           ),
           Scaffold(
             floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
             floatingActionButton: FloatingActionButton(
-              onPressed: (){
+              onPressed: () {
                 doLogout();
               },
               tooltip: 'Log Out',
