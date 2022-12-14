@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:project_uas/Screens/register.dart';
 import 'package:project_uas/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,7 +37,7 @@ class _LoginState extends State<Login> {
   // Function
   void doLogin() async {
     final response = await http.post(
-        Uri.parse("https://ubaya.fun/flutter/160419069/login.php"),
+        Uri.parse("https://ubaya.fun/flutter/meme/160419063/login.php"),
         body: {'user_id': _user_id, 'user_password': _user_password});
     if (response.statusCode == 200) {
       Map json = jsonDecode(response.body);
@@ -61,15 +62,27 @@ class _LoginState extends State<Login> {
         appBar: AppBar(
           title: Text('Login'),
         ),
-        body:  Container(
-            height: 500,
+        body: SingleChildScrollView(
+          child: Container(
+            height: 600,
             margin: EdgeInsets.all(20),
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                Padding(padding: EdgeInsets.all(10), 
-                child: Column(children:[Image(image: NetworkImage('https://ih1.redbubble.net/image.2311361932.7369/st,small,845x845-pad,1000x1000,f8f8f8.jpg')), 
-                Text('Daily Meme Digest', style: TextStyle(fontSize: 30, ))]),),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(children: [
+                    Image.asset(
+                      "assets/images/logo.png",
+                      scale: 0.5,
+                      height: 100, 
+                      width: 100,
+                    ),
+                    Text('Daily Meme Digest',
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold))
+                  ]),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: TextField(
@@ -98,11 +111,16 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
+                  child: SizedBox(
                     height: 50,
                     width: 300,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                         Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Register()));
+                      },
                       child: Text(
                         'Create Account',
                         style: TextStyle(color: Colors.blue, fontSize: 25),
@@ -112,7 +130,7 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
+                  child: SizedBox(
                     height: 50,
                     width: 300,
                     child: ElevatedButton(
@@ -129,6 +147,6 @@ class _LoginState extends State<Login> {
               ],
             ),
           ),
-        );
+        ));
   }
 }
