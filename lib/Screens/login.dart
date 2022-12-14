@@ -58,70 +58,77 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Container(
-        height: 300,
-        margin: EdgeInsets.all(20),
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: _user_cont,
-                onChanged: (v) {
-                  _user_id = v;
-                },
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    hintText: 'Enter Valid Email ID As ABC@gmail.com'),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: TextField(
-                obscureText: true,
-                onChanged: (v) {
-                  _user_password = v;
-                },
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'Enter Secure Password'),
-              ),
-            ),
-            Container(
-              height: 50,
-              width: 300,
-              child: ElevatedButton(
-                onPressed: () {
-                  
-                },
-                child: Text(
-                  'Create Account',
-                  style: TextStyle(color: Colors.blue, fontSize: 25),
-                ),
-              ),
-            ),
-            Container(
-              height: 50,
-              width: 300,
-              child: ElevatedButton(
-                onPressed: () {
-                  doLogin();
-                },
-                child: Text(
-                  'Sign In',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                ),
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          title: Text('Login'),
         ),
-      ),
-    );
+        body:  Container(
+            height: 500,
+            margin: EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Padding(padding: EdgeInsets.all(10), 
+                child: Column(children:[Image(image: NetworkImage('https://ih1.redbubble.net/image.2311361932.7369/st,small,845x845-pad,1000x1000,f8f8f8.jpg')), 
+                Text('Daily Meme Digest', style: TextStyle(fontSize: 30, ))]),),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    controller: _user_cont,
+                    onChanged: (v) {
+                      _user_id = v;
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Username',
+                        hintText: 'Enter Username'),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    obscureText: true,
+                    onChanged: (v) {
+                      _user_password = v;
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                        hintText: 'Enter Secure Password'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 50,
+                    width: 300,
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Create Account',
+                        style: TextStyle(color: Colors.blue, fontSize: 25),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 50,
+                    width: 300,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        doLogin();
+                      },
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(color: Colors.white, fontSize: 25),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
   }
 }
