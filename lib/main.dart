@@ -4,10 +4,14 @@ import 'package:project_uas/Screens/leaderboard.dart';
 import 'package:project_uas/Screens/login.dart';
 import 'package:project_uas/Screens/my_creation.dart';
 import 'package:project_uas/Screens/setting.dart';
+import 'package:project_uas/screens/addnewmeme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-String active_user = "";
+String username = "";
+String id_user = "";
+String fullname = "";
+
 Future<String> checkUser() async {
   final prefs = await SharedPreferences.getInstance();
   String user_id = prefs.getString("user_id") ?? '';
@@ -26,7 +30,7 @@ void main() {
     if (result == '') {
       runApp(MyLogin());
     } else {
-      active_user = result;
+      username = result;
       runApp(MyApp());
     }
   });
@@ -60,6 +64,7 @@ class MyApp extends StatelessWidget {
         'leaderboard': (context) => Leaderboard(),
         'mycreation': (context) =>MyCreation(),
         'setting': (context) => Setting(),
+        'addnewmeme': (context) => AddNewMeme()
       },
     );
   }
@@ -130,9 +135,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _screens[_currentIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //  nambah meme
+          Navigator.pushNamed(context, 'addnewmeme');
         },
-        tooltip: 'Increment',
+        tooltip: 'Add New Meme',
         child: const Icon(Icons.add),
       ),
       drawer: myDrawer(),
@@ -165,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           UserAccountsDrawerHeader(
             accountName: Text('nama lengkap'),
-            accountEmail: Text(active_user),
+            accountEmail: Text(username),
             currentAccountPicture: CircleAvatar(
               backgroundImage:
               NetworkImage('https://i.pravatar.cc/150'), //nanti diisi avatar orange
@@ -174,8 +179,10 @@ class _MyHomePageState extends State<MyHomePage> {
           Scaffold(
             floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
             floatingActionButton: FloatingActionButton(
-              onPressed: _incrementCounter,
-              tooltip: 'Increment',
+              onPressed: (){
+                doLogout();
+              },
+              tooltip: 'Log Out',
               backgroundColor: Colors.orange,
               foregroundColor: Colors.white,
               child: const Icon(Icons.logout),

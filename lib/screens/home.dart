@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:project_uas/main.dart';
 import '../class/meme.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   @override
@@ -20,6 +22,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool _alreadylike = false;
+
+  Future<String> fetchData() async {
+    final response = await http
+        .post(Uri.parse('https://ubaya.fun/flutter/160419063/getmemes.php'),
+        body: {'iduser': id_user}); //untuk mengirim data
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +50,22 @@ class _HomeState extends State<Home> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               children: [
-
+                FutureBuilder(
+                  future: fetchData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return Text("Error! ${snapshot.error}");
+                        } else if (snapshot.hasData) {
+                          return widMemes(snapshot.data.toString());
+                        } else {
+                          return const Text("No data");
+                        }
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }
+                )
               ],
               padding: EdgeInsets.only(left: 8,right: 8),
             ),
@@ -59,16 +89,36 @@ class _HomeState extends State<Home> {
         itemCount: memes.length,
         itemBuilder: (BuildContext ctxt, int index){
           return Card(
-            elevation: 12,
+            elevation: 15,
             margin: EdgeInsets.all(16),
             child: Column(
               children: [
                 Image.network(memes[index].url),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-
-                  ],
+                Padding(
+                    padding: EdgeInsets.only(left: 6, right: 6),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RichText(text: TextSpan(
+                            children: [
+                              WidgetSpan(
+                                  child: Icon(Icons.favorite, color: (_alreadylike) ? Colors.red: Colors.grey,)
+                              ),
+                              TextSpan(
+                                  text: '  $memes[index].likes likes'
+                              ),
+                            ]
+                        )
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.chat_bubble, color: Colors.blue,),
+                          tooltip: 'Add Comment',
+                          onPressed: () {
+                            //  buka halaman chat
+                          },
+                        ),
+                      ],
+                    ),
                 ),
               ],
             ),
