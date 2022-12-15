@@ -21,7 +21,7 @@ class _RegisterState extends State<Register> {
   String _firstName = "";
   String _lastName = "";
 
-  void doLogin() async {
+  void doRegist() async {
     final response = await http.post(
         Uri.parse("https://ubaya.fun/flutter/160419063/meme/register.php"),
         body: {
@@ -34,7 +34,6 @@ class _RegisterState extends State<Register> {
     if (response.statusCode == 200) {
       Map json = jsonDecode(response.body);
       if (json['result'] == 'success') {
-
         MyLogin();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -51,74 +50,91 @@ class _RegisterState extends State<Register> {
         appBar: AppBar(
           title: Text('Register'),
         ),
-        body: Column(children: [
+        body: SingleChildScrollView(
+            child: Column(children: [
           Text('Daily Meme Digest', style: TextStyle(fontSize: 30)),
           Text('Create Account',
               style: TextStyle(
                 fontSize: 25,
               )),
           Container(
-              height: 200,
+              height: 500,
               margin: EdgeInsets.all(20),
               padding: EdgeInsets.all(20),
               child: Column(children: [
-                TextField(
-                  controller: _user_cont,
-                  onChanged: (v) {
-                    _username = v;
-                  },
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Username',
-                      hintText: 'Enter Username'),
-                ),
-                TextField(
-                  controller: _user_cont,
-                  onChanged: (v) {
-                    _firstName = v;
-                  },
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'First Name',
-                      hintText: 'Enter First Name'),
-                ),
-                TextField(
-                  controller: _user_cont,
-                  onChanged: (v) {
-                    _lastName = v;
-                  },
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Last Name',
-                      hintText: 'Enter Last Name'),
-                ),
-                TextField(
-                  controller: _user_cont,
-                  onChanged: (v) {
-                    _password = v;
-                  },
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                      hintText: 'Enter Password'),
-                ),
-                TextField(
-                  controller: _user_cont,
-                  onChanged: (v) {
-                    _rPassword = v;
-                  },
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Repeat Password',
-                      hintText: 'Enter Repeat Password'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _user_cont,
+                    onChanged: (v) {
+                      _username = v;
+                      print(_username);
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Username',
+                        hintText: 'Enter Username'),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (v) {
+                      _firstName = v;
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'First Name',
+                        hintText: 'Enter First Name'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (v) {
+                      _lastName = v;
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Last Name',
+                        hintText: 'Enter Last Name'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    obscureText: true,
+                    onChanged: (v) {
+                      _password = v;
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                        hintText: 'Enter Password'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    obscureText: true,
+                    onChanged: (v) {
+                      _rPassword = v;
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Repeat Password',
+                        hintText: 'Enter Repeat Password'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: SizedBox(
                     height: 50,
                     width: 300,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        doRegist();
+                      },
                       child: Text(
                         'Create Account',
                         style: TextStyle(color: Colors.white, fontSize: 25),
@@ -127,6 +143,6 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ])),
-        ]));
+        ])));
   }
 }

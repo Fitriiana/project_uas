@@ -38,14 +38,17 @@ class _LoginState extends State<Login> {
   void doLogin() async {
     final response = await http.post(
         Uri.parse("https://ubaya.fun/flutter/160419063/meme/login.php"),
-        body: {'user_id': _user_id, 'user_password': _user_password});
+        body: {'username': _user_id, 'password': _user_password});
     if (response.statusCode == 200) {
       Map json = jsonDecode(response.body);
       if (json['result'] == 'success') {
         final prefs = await SharedPreferences.getInstance();
-        prefs.setString("user_id", _user_id);
-        prefs.setString("user_name", json['username']);
-        prefs.setString("fullname", json['nama_depan'] + json['nama_belakang']);
+        prefs.setString("id_user", json['data']['iduser']);
+
+        prefs.setString("user_name", json['data']['username']);
+        prefs.setString("fName", json['data']['nama_depan']);
+        prefs.setString("lName", json['data']['nama_belakang']);
+
         main();
       } else {
         setState(() {
@@ -113,8 +116,8 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: 50,
-                    width: 300,
+                    height: 40,
+                    width: 250,
                     child: OutlinedButton(
                       onPressed: () {
                         Navigator.push(
@@ -132,8 +135,8 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: 25,
-                    width: 200,
+                    height: 40,
+                    width: 250,
                     child: ElevatedButton(
                       onPressed: () {
                         doLogin();

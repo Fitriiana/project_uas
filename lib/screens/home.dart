@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
 
   Future<String> fetchData() async {
     final response = await http
-        .post(Uri.parse('https://ubaya.fun/flutter/160419063/getmemes.php'),
+        .post(Uri.parse('https://ubaya.fun/flutter/160419063/meme/getmemes.php'),
         body: {'iduser': id_user}); //untuk mengirim data
     if (response.statusCode == 200) {
       return response.body;

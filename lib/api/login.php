@@ -15,7 +15,7 @@ if ($conn->connect_error) {
   $result = $stmt->get_result();
   if ($result->num_rows > 0) {
     $r = mysqli_fetch_assoc($result); 
-    $arr = ["result" => "success", "username" => $r['username']];
+    $arr = ["result" => "success", "data" => $r];
   } else {
     $arr = ["result" => "error", "message" => ""];
   }

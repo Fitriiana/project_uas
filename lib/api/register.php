@@ -1,27 +1,29 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Methods: GET, POST,');
+header("Access-Control-Allow-Headers: X-Requested-With");
 $arr = null;
 
-$conn = new mysqli("localhost", "flutter_160419069", "ubaya", "flutter_160419069");
+$conn = new mysqli("localhost", "flutter_160419063", "ubaya", "flutter_160419063");
+
 extract($_POST);
 $r_pass = $_POST['rPassword'];
 $pass = $_POST['password'];
-$tgl = date('Y/m/d');
+$tgl =  date_create('now')->format('Y-m-d');
 
 if ($conn->connect_error) {
   $arr = ["result" => "error", "message" => "unable to connect"];
 } else {
   if ($r_pass == $pass) {
-    $sql = "INSERT INTO users(username, password, nama_depan, nama_belakang, privasi, link_avatar, tanggal_daftar) values(?,?,?,?,?,?,?)";
+    $sql = "INSERT INTO users (username, nama_depan, nama_belakang, password, tanggal_daftar, link_avatar, privasi) VALUES (?,?,?,?,?,?,?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssiss", $username, $pass, $nama_depan, $nama_belakang, 0, "", $tgl);
+    $stmt->bind_param("ssssssi", $username, $nama_depan, $nama_belakang, $pass, $tgl, "", 0);
     $stmt->execute();
     $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-      $r = mysqli_fetch_assoc($result);
-      $arr = ["result" => "success", "user_name" => $r['user_name']];
+    if ($stmt->affected_rows > 0) {
+      $arr = ["result" => "success", "id" => $conn->insert_id];
     } else {
-      $arr = ["result" => "error", "message" => "sql error: $sql"];
+      $arr = ["result" => "fail", "Error" => $conn->error];
     }
   }
 }

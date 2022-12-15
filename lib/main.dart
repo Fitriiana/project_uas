@@ -11,12 +11,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 String username = "";
 String id_user = "";
-String fullname = "";
+String fName = "";
+String lName = "";
 
 Future<String> checkUser() async {
   final prefs = await SharedPreferences.getInstance();
-  username = prefs.getString("username") ?? '';
-  fullname = prefs.getString("fullname") ?? '';
+  username = prefs.getString("user_name") ?? '';
+  fName = prefs.getString("fName") ?? '';
+  lName = prefs.getString("lName") ?? '';
+  id_user = prefs.getString("id_user") ?? '';
+
   return username;
 }
 
@@ -178,31 +182,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Drawer myDrawer() {
     return Drawer(
-      elevation: 16.0,
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            accountName: Text(fullname),
-            accountEmail: Text(username),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://i.pravatar.cc/150'), //nanti diisi avatar orange
-            ),
+        elevation: 16.0,
+        child: Row(children: [
+          Column(
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text("$fName $lName"),
+                accountEmail: Text(username),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      'https://i.pravatar.cc/150'), //nanti diisi avatar orange
+                ),
+              ),
+              Scaffold(
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.endTop,
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    doLogout();
+                  },
+                  tooltip: 'Log Out',
+                  backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
+                  child: const Icon(Icons.logout),
+                ),
+              ),
+            ],
           ),
-          Scaffold(
-            floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                doLogout();
-              },
-              tooltip: 'Log Out',
-              backgroundColor: Colors.orange,
-              foregroundColor: Colors.white,
-              child: const Icon(Icons.logout),
-            ),
-          ),
-        ],
-      ),
-    );
+        ]));
   }
 }
