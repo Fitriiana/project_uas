@@ -27,7 +27,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String _user_id = "";
+  String _username = "";
   String _user_password = "";
 
   final TextEditingController _user_cont = TextEditingController();
@@ -38,7 +38,7 @@ class _LoginState extends State<Login> {
   void doLogin() async {
     final response = await http.post(
         Uri.parse("https://ubaya.fun/flutter/160419063/meme/login.php"),
-        body: {'username': _user_id, 'password': _user_password});
+        body: {'username': _username, 'password': _user_password});
     if (response.statusCode == 200) {
       Map json = jsonDecode(response.body);
       if (json['result'] == 'success') {
@@ -90,9 +90,8 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: TextField(
-                    controller: _user_cont,
                     onChanged: (v) {
-                      _user_id = v;
+                      _username = v;
                     },
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
